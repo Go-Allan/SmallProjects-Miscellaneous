@@ -1,0 +1,74 @@
+
+<SelectableLabel>:
+    # Draw a background to indicate selection
+    canvas.before:
+        Color:
+            rgba: (.0, 0.9, .1, .3) if self.selected else (0.7, 0.5, 0, 1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+<RV>:
+    layout_manager:layout_manager
+    viewclass: 'SelectableLabel'
+    SelectableRecycleBoxLayout:
+        id: layout_manager
+        size_hint_y: None
+        multiselect: False
+        touch_multiselect: False
+        orientation: 'vertical'
+        default_size: None, dp(56)
+        default_size_hint: 1, None
+        height: self.minimum_height
+
+<RVScreen>:
+    recycleview: recycleview
+    RV:
+        id: recycleview
+        # searchbox: searchbox
+        # size: self.x, searchbox.y
+        # size_hint_y: None
+        # pos: root.pos
+
+# This is being use as arbitrary screen may be displayed
+<DisplayArea>:
+    rvscreen: rvscreen
+    RVScreen:
+        id: rvscreen
+        name: 'searchitems'
+
+<CommandPane>:
+    id: cmdpane
+    app: app
+    searchbox: searchbox
+    displayarea: displayarea
+    recycleview: displayarea.rvscreen.recycleview
+    Label:
+        size: root.size
+        pos: root.pos
+        text: ""
+        canvas:
+            Color:
+                rgba: 0,0,1,0.5
+            Rectangle:
+                pos: root.pos
+                size: root.size
+    SearchBox:
+        id: searchbox
+        app: app
+        displayarea: displayarea
+        recycleview: displayarea.rvscreen.recycleview
+        multiline: False
+        on_text: root.search()
+        pos: root.x, root.top - self.height
+        size: root.width, 40
+        size_hint: None, None
+
+    DisplayArea:
+        id: displayarea
+        size: root.x, searchbox.y
+        size_hint_y: None
+        # size: self.x, searchbox.y
+        pos: root.pos
+            # id: recycleview
+            # searchbox: searchbox
+            # pos: root.pos

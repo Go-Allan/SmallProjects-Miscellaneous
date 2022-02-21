@@ -1,0 +1,78 @@
+#:include editor.kv
+#:include cmdpane.kv
+#:include workbench.kv
+#:include statusbar.kv
+#:include splash.kv
+# :import util util
+
+<MyScreenManager>:
+    canvas.before:
+        Color:
+            rgba: .2, .2, .2, 0.4
+        Rectangle:
+            pos: root.pos
+            size: root.size
+
+    SplashPage:
+        name: 'splash'
+    UncrumpledWindow:
+        name: 'uncrumpled'
+
+
+<UncrumpledWindow>:
+    font_name: 'Inconsolata'
+    padding: 10,10,10,10
+    statusbar: statusbar
+    workbench: workbench
+    commandpane: commandpane
+    editor: editor
+
+    Workbench:
+        # visible: 0
+        canvas.before:
+            Line:
+                width: 2
+                rectangle: self.x, self.y, self.width, self.height
+        id: workbench
+        size_hint_x: .2
+        pos_hint: ({'x': 0} if self.visible else {'right': 0})
+
+    FloatLayout:
+        size_hint_x: 1 if not root.workbench.visible else 0.8
+        pos_hint:{'x':.2 if root.workbench.visible else 0}
+        BoxLayout:
+            orientation: "vertical"
+            pos_hint: {'x': 0, 'y': 0}
+            orientration: 'vertical'
+
+            UncrumpledEditor:
+                app:app
+                id: editor
+            StatusBar:
+                id: statusbar
+                size: self.x, 30
+                size_hint_y: None
+
+            # BoxLayout:
+                # pos_hint: {'x': 0, 'y': 0}
+                # Button:
+                    # text: "toggle commandpane"
+                    # on_press: commandpane.toggle()
+            # BoxLayout:
+                # pos_hint: {'x': 0, 'y': 0}
+                # Button:
+                    # text: "toggle workbench"
+                    # on_press: workbench.toggle()
+
+    CommandPane:
+        canvas.before:
+            Line:
+                width: 2
+                rectangle: self.x, self.y, self.width, self.height
+        id: commandpane
+        size_hint_x: .2
+        pos_hint: ({'right': 1} if self.visible else {'x': 1})
+        pos: self.pos
+        size: self.size
+        visible: False
+
